@@ -1,16 +1,23 @@
 # Neural-Network-Genetic-algorithm
 The program builds neural networks using a genetic algorithm that will learn patterns of files given to it and will be able to predict whether a certain string matches the pattern or not.
+## Requirements
 
-Installation
+The program requires:
+
+- Python 3.x 
+- NumPy library
+  
+## Installation
 Clone the repository:
-shell
-Copy code
-$ git clone [repository URL]
-$ cd [project directory]
+```shell
+ git clone https://github.com/Shachar-Oron/Neural-Network-Genetic-algorithm
+ cd Neural-Network-Genetic-algorithm
+```
+
 Install the required dependencies:
-ruby
-Copy code
-$ pip install numpy
+```shell
+pip install numpy
+```
 ## Usage
 Prepare the dataset:
 
@@ -19,11 +26,14 @@ Modify the dataset loading code in the main() function of buildnet.py to suit yo
 Configure the neural network and genetic algorithm parameters:
 
 Adjust the parameters in the main() function of buildnet.py to customize the neural network architecture, genetic algorithm settings, and other relevant parameters.
-Run the program:
-
-ruby
-Copy code
-$ python buildnet.py
+Run the first the program:
+```shell
+python buildnet0.py
+```
+Run the second the program:
+```shell
+python buildnet1.py
+```
 ## Monitor the progress and results:
 The program will display information about the evolution process, including the fitness scores and best individuals of each generation.
 The final trained neural network will be saved to a file (best_network.pickle by default).
