@@ -8,9 +8,7 @@ import numpy as np
 import time
 import pandas as pd
 from matplotlib import pyplot as plt
-
-
-# todo:change
+import pickle
 
 
 # activation functions
@@ -52,22 +50,29 @@ def f(row: str):
 
 # organize the data
 def split_data():
-    file_path = 'nn0.txt'
-    test_ratio = 0.2
+    train_file = input("please enter train file:")
+    test_file = input("please enter test file:")
+    # train_file = "tr.txt"
+    # test_file = "te.txt"
 
-    data = pd.read_csv(file_path, sep='\s+', header=None, dtype=str)
-    examples = data.iloc[:, 0].astype(str)
-    transpose = examples.to_frame()
-    matrix = transpose.apply(f, axis='columns', result_type='expand')
-    matrix = matrix.to_numpy(int)
-    labels = data.iloc[:, 1].values.astype(int)
+    # for train
+    read_train = pd.read_csv(train_file, sep='\s+', header=None, dtype=str)
+    training_examples = read_train.iloc[:, 0].astype(str)
+    transpose = training_examples.to_frame()
+    train_matrix = transpose.apply(f, axis='columns', result_type='expand')
+    train_matrix = train_matrix.to_numpy(int)
+    training_labels = read_train.iloc[:, 1].values.astype(int)
+    # for test
+    read_test = pd.read_csv(test_file, sep='\s+', header=None, dtype=str)
+    test_examples = read_test.iloc[:, 0].astype(str)
+    transpose = test_examples.to_frame()
+    test_matrix = transpose.apply(f, axis='columns', result_type='expand')
+    test_matrix = test_matrix.to_numpy(int)
+    test_labels = read_test.iloc[:, 1].values.astype(int)
 
-    train_len = int(test_ratio * matrix.shape[0])
-    indices = np.random.permutation(matrix.shape[0])
-    training_idx, test_idx = indices[:train_len], indices[train_len:]
-    test_examples, training_examples = matrix[training_idx], matrix[test_idx]
-    test_labels, training_labels = labels[training_idx], labels[test_idx]
 
+    training_examples = train_matrix[:train_matrix.shape[0]]
+    test_examples = test_matrix[:test_matrix.shape[0]]
     return training_examples, training_labels, test_examples, test_labels
 
 
@@ -297,7 +302,23 @@ def main():
     ga = GeneticAlg()
     # train
     best_network = ga.run_algo()
+    # Open the file in write mode
+    with open('wnet.txt', 'w') as file:
+        # Save the layers
+        file.write("Layers:\n")
+        for layer in best_network.layers:
+            file.write(str(layer) + "\n")
 
+        # Save the weights
+        file.write("\nWeights:\n")
+        for layer in best_network.layers:
+            if isinstance(layer, tuple):
+                inside, outside = layer
+                weights = np.random.randn(inside, outside) * np.sqrt(1 / inside)
+                file.write("Layer Weights:\n")
+                for weight_row in weights:
+                    file.write(" ".join(str(weight) for weight in weight_row) + "\n")
+                file.write("\n")
     # test
     predict_test = best_network.predict(ga.x_test)
     accuracy = calculate_accuracy(ga.y_test, predict_test)
