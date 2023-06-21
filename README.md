@@ -43,22 +43,22 @@ Adjust the parameters in the main() function of buildnet.py to customize the neu
 ## Run the program:
 Run the first the program:
 ```shell
-python buildnet0.exe
+ ./buildnet0.exe
 ```
 Then the app will ask you to input your test and train files for buildnet0
 Run the second the program:
 ```shell
-python buildnet1.exe
+ ./buildnet1.exe
 ```
 Then the app will ask you to input your test and train files for buildnet1
 Both apps will create ‘wnet.pkl’ files as outputs that hold the best neural network structure for each runnet .exe files. 
 To run the ‘runnet0.exe’ program, enter the following command:
 ```shell
-python runnet0.exe
+./runnet0.exe
 ```
 Now do the same for runnet1.exe with the relevant input file:
 ```shell
-python runnet1.exe
+./runnet1.exe
 ```
 The final results will be in the files: results0.txt & results1.txt
 
