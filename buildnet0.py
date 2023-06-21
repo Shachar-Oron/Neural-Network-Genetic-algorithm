@@ -3,12 +3,12 @@
 # shahar oron 322807231
 import copy
 from itertools import tee
-import random
 import numpy as np
 import time
 import pandas as pd
 from matplotlib import pyplot as plt
 import pickle
+
 
 
 # activation functions
@@ -52,8 +52,6 @@ def f(row: str):
 def split_data():
     train_file = input("please enter train file:")
     test_file = input("please enter test file:")
-    # train_file = "tr.txt"
-    # test_file = "te.txt"
 
     # for train
     read_train = pd.read_csv(train_file, sep='\s+', header=None, dtype=str)
@@ -294,7 +292,12 @@ def create_png(generations, accuracy):
     plt.savefig("fitness_score_over_time.png")
 
 
-#
+def write_wnet(best_network):
+    # Open the file in write mode
+    with open('wnet0.pkl', 'wb') as file:
+        pickle.dump(best_network, file)
+
+
 
 def main():
     np.seterr(all="raise")
@@ -302,23 +305,7 @@ def main():
     ga = GeneticAlg()
     # train
     best_network = ga.run_algo()
-    # Open the file in write mode
-    with open('wnet.txt', 'w') as file:
-        # Save the layers
-        file.write("Layers:\n")
-        for layer in best_network.layers:
-            file.write(str(layer) + "\n")
-
-        # Save the weights
-        file.write("\nWeights:\n")
-        for layer in best_network.layers:
-            if isinstance(layer, tuple):
-                inside, outside = layer
-                weights = np.random.randn(inside, outside) * np.sqrt(1 / inside)
-                file.write("Layer Weights:\n")
-                for weight_row in weights:
-                    file.write(" ".join(str(weight) for weight in weight_row) + "\n")
-                file.write("\n")
+    write_wnet(best_network)
     # test
     predict_test = best_network.predict(ga.x_test)
     accuracy = calculate_accuracy(ga.y_test, predict_test)

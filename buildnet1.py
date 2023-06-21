@@ -2,6 +2,7 @@
 # noga ben-ari 208304220
 # shahar oron 322807231
 import copy
+import pickle
 from itertools import tee
 import random
 import numpy as np
@@ -292,8 +293,11 @@ def create_png(generations, accuracy):
     ax.set_title("Number of fitness score Over Time")
     plt.savefig("fitness_score_over_time.png")
 
+def write_wnet(best_network):
+    # Open the file in write mode
+    with open('wnet1.pkl', 'wb') as file:
+        pickle.dump(best_network, file)
 
-#
 
 def main():
     np.seterr(all="raise")
@@ -302,24 +306,7 @@ def main():
     # train
     best_network = ga.run_algo()
     # Open the file in write mode
-    with open('wnet.txt', 'w') as file:
-        # Save the layers
-        file.write("Layers:\n")
-        for layer in best_network.layers:
-            file.write(str(layer) + "\n")
-
-        # Save the weights
-        file.write("\nWeights:\n")
-        for layer in best_network.layers:
-            if isinstance(layer, tuple):
-                inside, outside = layer
-                weights = np.random.randn(inside, outside) * np.sqrt(1 / inside)
-                file.write("Layer Weights:\n")
-                for weight_row in weights:
-                    file.write(" ".join(str(weight) for weight in weight_row) + "\n")
-                file.write("\n")
-
-
+    write_wnet(best_network)
 
     # test
     predict_test = best_network.predict(ga.x_test)
