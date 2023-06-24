@@ -1,3 +1,5 @@
+import pandas as pd
+
 from buildnet0 import Individual
 import numpy as np
 import pickle
@@ -11,11 +13,8 @@ def load_test_data(filename):
     return np.array(data)
 
 
-
 def main():
-    test_file = input("please enter test file:")
-
-    x_test = load_test_data(test_file)
+    x_test = load_test_data("testnet0.txt")
     with open('wnet0.pkl', 'rb') as file:
         best_network = pickle.load(file)
     predictions_labels = best_network.predict(x_test)

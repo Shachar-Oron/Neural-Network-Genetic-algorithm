@@ -11,11 +11,8 @@ def load_test_data(filename):
     return np.array(data)
 
 
-
 def main():
-    test_file = input("please enter test file:")
-
-    x_test = load_test_data(test_file)
+    x_test = load_test_data("testnet1.txt")
     with open('wnet1.pkl', 'rb') as file:
         best_network = pickle.load(file)
     predictions_labels = best_network.predict(x_test)
